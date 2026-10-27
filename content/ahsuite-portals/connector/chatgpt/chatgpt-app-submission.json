@@ -1,0 +1,932 @@
+{
+  "$schema": "https://developers.openai.com/apps-sdk/schemas/chatgpt-app-submission.v1.json",
+  "schema_version": 1,
+  "app_info": {
+    "display_name": "Ahsuite",
+    "subtitle": "Manage your client portals",
+    "description": "Ahsuite is client portal software for agencies, freelancers and service businesses. Connect your Ahsuite account to ask what's open, due or waiting on a client across your portals, and to read tasks, pages, files, conversations, projects, invoices and work journals. When you ask, it can also create portals and pages, create and assign tasks, add file requests, set up projects, write journal entries, reply to client conversations and create invoices. Tools that email your clients, such as assigning a task to the client or creating an invoice, say so. No tool takes or returns a password.",
+    "category": "BUSINESS"
+  },
+  "tools": {
+    "add_checklist_items": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds new checklist items to an existing task in Ahsuite.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Existing checklist items are kept; it only adds new ones."
+      }
+    },
+    "add_file_comment": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Posts a comment on a file and writes it to the file history.",
+        "open_world_justification": "Notifies the people on the file, including client users when the file is shared with them, so it can reach people outside the account.",
+        "destructive_justification": "A posted comment notifies people right away and cannot be recalled through the connector."
+      }
+    },
+    "add_file_labels": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds labels to a file, creating a label in the portal if it does not exist yet.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Existing labels are kept; it only adds."
+      }
+    },
+    "add_file_version": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds a new link version to an existing file.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Older versions are kept; the only side effect is that an already-approved file goes back to approval required."
+      }
+    },
+    "add_invoice_item": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds a line item to an unpaid invoice and recomputes its total.",
+        "open_world_justification": "Changes the invoice inside Ahsuite and sends no email.",
+        "destructive_justification": "Existing line items are kept; it only adds one."
+      }
+    },
+    "add_journal_log": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds an entry to an internal work journal.",
+        "open_world_justification": "Journals are internal to the agency team; @mentions notify team members only, not clients.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "add_project_phase": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds a new phase to the end of a project.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "add_project_resources": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Links existing pages, files, conversations or saved logins to a project.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Already-linked resources are skipped and nothing is unlinked."
+      }
+    },
+    "add_project_tasks": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Places existing tasks into a project or moves them to another phase of it.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only changes where tasks sit in a project; no task or content is deleted."
+      }
+    },
+    "add_tab": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds a new empty tab to a page.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "add_task_comment": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Posts a comment on a task and writes it to the task history.",
+        "open_world_justification": "Notifies the people on the task, including client users when the task is shared with them, so it can reach people outside the account.",
+        "destructive_justification": "A posted comment notifies people right away and cannot be recalled through the connector."
+      }
+    },
+    "add_task_labels": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds labels to a task, creating a label in the portal if it does not exist yet.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Existing labels are kept; it only adds."
+      }
+    },
+    "assign_task": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes who a task is assigned to.",
+        "open_world_justification": "Assigning to the client or a client user sends them an \"action required\" email outside Ahsuite.",
+        "destructive_justification": "Replaces the current assignee and, for client assignments, sends an email that cannot be unsent."
+      }
+    },
+    "create_contact": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Adds a client user to a portal.",
+        "open_world_justification": "With send_client_email_notify=1 it emails an invitation to the new contact; by default it adds them silently.",
+        "destructive_justification": "When the invite option is used, the invitation email cannot be unsent; otherwise it only adds a contact."
+      }
+    },
+    "create_conversation": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Starts a new message thread in a portal.",
+        "open_world_justification": "Creates the thread inside Ahsuite; messages are sent separately with reply_to_conversation.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_file": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Adds one link, file request or folder to a portal's Files section.",
+        "open_world_justification": "Creates the item inside Ahsuite and does not send email.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_invoice": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Creates an invoice in a portal.",
+        "open_world_justification": "Always emails the client an \"action required\" notice when the invoice is created.",
+        "destructive_justification": "Sends the client a billing email that cannot be unsent; the tool description tells the assistant to confirm first."
+      }
+    },
+    "create_journal": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new internal work journal in a portal.",
+        "open_world_justification": "Journals are internal to the agency team and nothing is sent outside Ahsuite.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_page": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new page in a portal with optional content blocks.",
+        "open_world_justification": "Creates the page inside Ahsuite and does not send email.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_password": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Saves a login's name, address and username in a portal's password manager (never a password).",
+        "open_world_justification": "With the request option, Ahsuite emails a client user asking them to add the password.",
+        "destructive_justification": "When the request option is used, the email cannot be unsent; otherwise it only adds a saved login."
+      }
+    },
+    "create_portal": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new client portal and its primary client user.",
+        "open_world_justification": "Creates the portal inside Ahsuite; the tool description does not say it emails the contact.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_project": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new project in a portal.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only adds new data and does not delete, overwrite or revoke anything."
+      }
+    },
+    "create_task": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new task in a portal.",
+        "open_world_justification": "With assign_to_client=1 the client is emailed about the task; by default it is an internal team task.",
+        "destructive_justification": "When assigned to the client, the notification email cannot be unsent; otherwise it only adds a task."
+      }
+    },
+    "delete_question": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Deletes a form question from a page.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Permanently deletes the question (and any questions inside a section) and cannot be undone."
+      }
+    },
+    "generate_portal_share_link": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Creates a new Preview & Share link for a portal.",
+        "open_world_justification": "Changes only the portal's own share link inside Ahsuite and sends nothing to anyone.",
+        "destructive_justification": "The previous share link stops working at once, which revokes access for anyone who had it."
+      }
+    },
+    "get_conversation": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one thread's settings and its last 25 messages, and does not mark the thread as read.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_file": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one file's details, versions, comments and labels, returning download links that expire after 2 hours, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_invoice": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one invoice with its line items and adjustments, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_journal": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one work journal and its newest 25 entries, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_page": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one page's tabs and content blocks, returning temporary image links, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_portal": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one portal's settings (contact, preferences, sidebar, branding, notifications, variables), and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_portal_share_link": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only returns the portal's existing Preview & Share link, or an empty value if none exists, and never creates or replaces a link.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_project": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one project with its phases, tasks and linked resources, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "get_task": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only reads one task with its checklist, labels, attachments and comments, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_contacts": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's client users with email, invite status and permissions, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_conversations": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's message threads and whether they have unread replies, and does not mark anything read.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_files": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's files, links, file requests and folders with their approval status, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_invoices": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's invoices with number, dates, amount and status, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_journals": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's work journals, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_notifications": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists the user's own notifications and does not mark them read; marking read is the separate mark_notifications_read tool.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_pages": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's pages with their category and draft flag, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_passwords": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's saved logins (name, address, username, password status), never returns a password, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_portals": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists the client portals in the signed-in Ahsuite account, with name search and pagination, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_projects": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's projects, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_tasks": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only lists a portal's tasks with status, assignee and due date, and changes nothing.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "list_timezones": {
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Only returns the fixed list of timezone identifiers Ahsuite accepts.",
+        "open_world_justification": "Reads the user's own Ahsuite account and does not send, post or publish anything outside Ahsuite.",
+        "destructive_justification": "Does not delete, overwrite or revoke anything."
+      }
+    },
+    "mark_invoice_paid": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Marks an unpaid invoice as paid.",
+        "open_world_justification": "Records a manual payment inside Ahsuite; no money moves.",
+        "destructive_justification": "Changes the invoice status permanently; it cannot be undone through the connector."
+      }
+    },
+    "mark_notifications_read": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Marks the user's own notifications as read.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only changes the user's own read markers; no content is deleted or overwritten."
+      }
+    },
+    "move_file": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Moves a file into a folder or back to the top level.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "The file takes over the sharing of its new folder, which can replace who is able to see it."
+      }
+    },
+    "move_question": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": false
+      },
+      "justifications": {
+        "read_only_justification": "Moves a form question into or out of a section on the same tab.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Only changes where the question sits; its text and answers are kept."
+      }
+    },
+    "remove_invoice_adjustment": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Removes one adjustment from a line item of an unpaid invoice.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Deletes the adjustment, which cannot be undone."
+      }
+    },
+    "remove_invoice_item": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Removes one line item and its adjustments from an unpaid invoice.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Deletes the line item, which cannot be undone."
+      }
+    },
+    "reply_to_conversation": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Posts a reply in a conversation.",
+        "open_world_justification": "When the conversation is shared with the client, the client is notified and emailed (unless emails are off for that thread).",
+        "destructive_justification": "A sent reply and its email cannot be recalled through the connector."
+      }
+    },
+    "update_account_manager": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes the Account Manager card the client sees in a portal.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the card's current text, buttons and visibility settings with the values sent."
+      }
+    },
+    "update_checklist_item": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Renames a checklist item or marks it completed.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the item's current text or completion state."
+      }
+    },
+    "update_client_user_defaults": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes the default permissions for newly added client users of a portal.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the current default permission settings (existing users are not changed)."
+      }
+    },
+    "update_conversation": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Renames a conversation or turns its client emails on or off.",
+        "open_world_justification": "Changes a setting inside Ahsuite and sends nothing itself.",
+        "destructive_justification": "Replaces the current name or email setting."
+      }
+    },
+    "update_email_notifications": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes a portal's summary-email frequency and the email templates clients receive.",
+        "open_world_justification": "Changes templates and frequency inside Ahsuite; this call does not itself send an email.",
+        "destructive_justification": "Replaces the current templates, and a blank value resets a template to the default."
+      }
+    },
+    "update_file": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes a file's title, description or client-approval setting.",
+        "open_world_justification": "Turning on require_client_approval shares the file and emails the client asking them to review or upload it.",
+        "destructive_justification": "Replaces the current title or description and can send an email that cannot be unsent."
+      }
+    },
+    "update_invoice": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Edits the header of an unpaid invoice (number, dates, currency, notes).",
+        "open_world_justification": "The tool description says no email is sent.",
+        "destructive_justification": "Replaces the current header values, and an empty notes value clears them."
+      }
+    },
+    "update_invoice_item": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Edits one line item of an unpaid invoice and recomputes the total.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the item's current name, price, quantity or adjustments with the values sent."
+      }
+    },
+    "update_journal": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Renames a work journal.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the journal's current name."
+      }
+    },
+    "update_page": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Edits a page's title, draft state, category, tabs and content blocks.",
+        "open_world_justification": "Changes the page inside Ahsuite and sends no email.",
+        "destructive_justification": "Replaces existing text or code content and clears fields sent as empty strings."
+      }
+    },
+    "update_portal_branding": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes a portal's custom CSS and client website.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the portal's current custom CSS and website values."
+      }
+    },
+    "update_portal_preferences": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Changes a portal's name, phone, timezone, language and security or visibility settings.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces current settings, including security toggles such as two-step login and file access without login."
+      }
+    },
+    "update_portal_sidebar": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Shows, hides, renames and reorders a portal's sidebar tools and sets custom link tabs.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces current labels, order and visibility, and the description says sending links replaces the whole custom-links list."
+      }
+    },
+    "update_portal_variables": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Creates or updates a portal's custom variables.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Overwrites the current value of a variable with the same name and scope."
+      }
+    },
+    "update_project": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Renames a project or changes its description.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the current name or description, and an empty description clears it."
+      }
+    },
+    "update_project_phase": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Renames a project phase.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the phase's current name."
+      }
+    },
+    "update_question": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": false,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Edits a form question's text, help text or required flag.",
+        "open_world_justification": "Changes only the user's own Ahsuite account and does not email or message anyone outside it.",
+        "destructive_justification": "Replaces the question's current text or settings."
+      }
+    },
+    "update_task": {
+      "annotations": {
+        "readOnlyHint": false,
+        "openWorldHint": true,
+        "destructiveHint": true
+      },
+      "justifications": {
+        "read_only_justification": "Edits a task's name, description, due date, status, dependency or project.",
+        "open_world_justification": "Setting status to done notifies the client when the client created the task.",
+        "destructive_justification": "Replaces existing values, clears fields sent as empty strings, and can cancel or complete the task."
+      }
+    }
+  },
+  "test_cases": [
+    {
+      "description": "Find every task that is waiting on a client, across all portals, and flag the overdue ones.",
+      "user_prompt": "Across my client portals, which tasks are still waiting on the client, and which of them are overdue?",
+      "file_attachment_urls": null,
+      "tools_triggered": "list_portals, list_tasks",
+      "expected_output": "Lists 8 client tasks in 3 portals, all overdue (due dates Oct 5 to Oct 20, 2026). Kettle & Crag Outfitters: Upload the product photography (Oct 7), Sign off on homepage design v2 (Oct 9), Choose an email platform: Klaviyo or Shopify Email (Oct 16), Complete the holiday campaign brief (Oct 20, Maren Holt). Saguaro Coffee Roasters: Send the wholesale price list (Oct 5), Approve label design, round 2 (Oct 10). Northwind Yoga Studio: Fill in the onboarding questionnaire (Oct 12), Send instructor headshots (Oct 19). Team tasks are not included and nothing is changed.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Summarize one project phase by phase.",
+      "user_prompt": "Give me a phase-by-phase status of the Kettle & Crag website redesign project.",
+      "file_attachment_urls": null,
+      "tools_triggered": "list_portals, list_projects, get_project",
+      "expected_output": "Website Redesign: Shopify 2.0, launch Tue, Nov 10, fixed fee $18,000 with half paid. Design: Sign off on homepage design v2 (client, due Oct 9), Upload the product photography (client, due Oct 7), Product page design v2 (In Progress, due Oct 16). Build, QA and launch: Content migration of 412 products and 38 collections (Ready for Work, due Oct 30), Set up redirects for 147 old URLs (Pending, due Nov 3). Linked resources: Meeting notes page, the Klaviyo or Shopify Email conversation, the WCAG 2.2 AA link and the Shopify staff login.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Read a client's invoices and explain the unpaid one.",
+      "user_prompt": "What does Kettle & Crag still owe us, and what's on that invoice?",
+      "file_attachment_urls": null,
+      "tools_triggered": "list_portals, list_invoices, get_invoice",
+      "expected_output": "Invoice 00002 for $2,250.00 USD is due (invoice date Oct 1, due Oct 15, 2026): one line, Growth retainer: October (SEO, paid social and email, 30 hours) at $2,500.00 less a $250.00 launch-month discount. Invoice 00001 for $9,000.00 is paid. Nothing is changed.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Log a call in a work journal and create internal follow-up tasks.",
+      "user_prompt": "Log today's call with Kettle & Crag in their work journal: we agreed to start launch prep next week. Then add two internal tasks for my team: \"Prep the launch checklist\" due next Friday, and \"Book the launch shoot\".",
+      "file_attachment_urls": null,
+      "tools_triggered": "list_portals, list_journals, add_journal_log, create_task",
+      "expected_output": "Adds one entry to the \"Website redesign - work log\" journal, authored by the signed-in user, and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" with next Friday's date and \"Book the launch shoot\" with no due date. Replies with what was logged and the two task names.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Create a new clean client portal with a welcome page, a sign-off task and a file request.",
+      "user_prompt": "Create a clean client portal for Juniper Lane Bakery (contact: Sam Rivera, sam@juniperlane.example.com) with a welcome page, an internal task to get the homepage design signed off by Friday, and a request for their logo files.",
+      "file_attachment_urls": null,
+      "tools_triggered": "create_portal, create_page, create_task, create_file",
+      "expected_output": "Creates one portal named Juniper Lane Bakery without the default template, with Sam Rivera as primary contact; a Welcome page with a short text block; an internal task due this Friday; and a file request for the logo files. Replies with what was created. Each create call runs once.",
+      "expected_output_url": null
+    }
+  ],
+  "negative_test_cases": [
+    {
+      "description": "General business advice about client onboarding should not touch the user's Ahsuite data.",
+      "user_prompt": "What's a good onboarding process for new clients at a small design agency?",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "Answers with general advice and does not call any Ahsuite tool, because the user did not ask about their portals or data.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Writing a reminder email is a drafting request, not a request to message a client through Ahsuite.",
+      "user_prompt": "Write a friendly email I can send a client to remind them to approve their homepage design.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "Writes the email text in the chat and does not post, comment or send anything through Ahsuite.",
+      "expected_output_url": null
+    },
+    {
+      "description": "Comparing email marketing tools is general research, even though a portal discusses the same choice.",
+      "user_prompt": "Compare Klaviyo and Shopify Email for a small outdoor gear store.",
+      "file_attachment_urls": null,
+      "tools_triggered": null,
+      "expected_output": "Gives a general comparison from its own knowledge and does not read or change any Ahsuite portal.",
+      "expected_output_url": null
+    }
+  ]
+}
