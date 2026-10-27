@@ -1,0 +1,12 @@
+{
+  "name": "ahsuite",
+  "displayName": "Ahsuite",
+  "version": "0.1.0",
+  "description": "Ready-made agency workflows for Ahsuite client portals: onboard a client, see what's waiting on clients, chase overdue tasks, turn meeting notes into tasks, draft invoices and check a portal's health.",
+  "author": { "name": "Ahsuite", "url": "https://ahsuite.com" },
+  "homepage": "https://ahsuite.com/ai",
+  "privacyPolicyUrl": "https://ahsuite.com/privacy",
+  "repository": "https://github.com/EthicalDigital/ahsuite-mcp",
+  "license": "MIT",
+  "keywords": ["client portal", "agency", "tasks", "invoices", "project management"]
+}
