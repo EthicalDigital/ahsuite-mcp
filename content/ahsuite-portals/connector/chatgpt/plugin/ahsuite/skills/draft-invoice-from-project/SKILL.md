@@ -45,3 +45,12 @@ To fix a mistake on an unpaid invoice afterwards, use `update_invoice` (header),
 `add_invoice_item` or `update_invoice_item`. Removing an item or adjustment
 (`remove_invoice_item`, `remove_invoice_adjustment`) can't be undone; confirm
 first. Never call `mark_invoice_paid` unless the user says the client paid.
+
+## Complete collection
+
+For every list call used by this workflow, follow all pages using the tool's
+`page` and `limit` parameters and returned pagination information. If no
+pagination information is returned, continue until a page is shorter than
+the requested limit. Traverse nested file folders recursively. If an error
+or access limit prevents complete collection, identify the missing scope
+and label the result partial; never report an incomplete scan as complete.

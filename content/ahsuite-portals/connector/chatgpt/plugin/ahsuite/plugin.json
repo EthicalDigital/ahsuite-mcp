@@ -1,0 +1,107 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "ahsuite",
+  "version": "1.0.1",
+  "description": "Run your agency's client portals from ChatGPT: see what's waiting on clients, build portals and pages, manage tasks, files, projects, journals and invoices.",
+  "author": {
+    "name": "Ethical Digital LLC",
+    "email": "support@ahsuite.com",
+    "url": "https://ahsuite.com"
+  },
+  "homepage": "https://ahsuite.com/ai",
+  "repository": "https://github.com/EthicalDigital/ahsuite-mcp",
+  "license": "MIT",
+  "keywords": [
+    "client portal",
+    "agency",
+    "tasks",
+    "invoices",
+    "client approvals"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Ahsuite",
+        "shortDescription": "Manage your client portals",
+        "longDescription": "Ahsuite is client portal software for agencies, freelancers and service businesses. Connect your Ahsuite account to ask what's open, due or waiting on a client across your portals, and to read tasks, pages, files, conversations, projects, invoices and work journals. When you ask, it can also create portals and pages, create and assign tasks, add file requests, set up projects, write journal entries, reply to client conversations and create invoices. Tools that email your clients, such as assigning a task to the client or creating an invoice, say so. No tool takes or returns a password.",
+        "developerName": "Ethical Digital LLC",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://ahsuite.com/ai",
+        "privacyPolicyURL": "https://ahsuite.com/privacy",
+        "termsOfServiceURL": "https://ahsuite.com/terms",
+        "supportURL": "https://ahsuite.com/contact-us",
+        "defaultPrompt": [
+          "What's waiting on my clients this week?",
+          "Set up a portal for a new client",
+          "Log today's client call and create the tasks"
+        ],
+        "brandColor": "#EA505A",
+        "composerIcon": "./assets/composer-icon.png",
+        "logo": "./assets/logo.png",
+        "screenshots": []
+      },
+      "review": {
+        "prompts": [
+          "What's waiting on my clients this week?",
+          "Set up a portal for a new client",
+          "Log today's client call and create the tasks"
+        ],
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Find every task that is waiting on a client, across all portals, and flag the overdue ones.",
+              "prompt": "Across my client portals, which tasks are still waiting on the client, and which of them are overdue?",
+              "tools_triggered": "list_portals, list_tasks",
+              "expected_behavior": "Lists 8 client tasks in 3 portals, all overdue (due dates Oct 5 to Oct 20, 2026). Kettle & Crag Outfitters: Upload the product photography (Oct 7), Sign off on homepage design v2 (Oct 9), Choose an email platform: Klaviyo or Shopify Email (Oct 16), Complete the holiday campaign brief (Oct 20, Maren Holt). Saguaro Coffee Roasters: Send the wholesale price list (Oct 5), Approve label design, round 2 (Oct 10). Northwind Yoga Studio: Fill in the onboarding questionnaire (Oct 12), Send instructor headshots (Oct 19). Team tasks are not included and nothing is changed."
+            },
+            {
+              "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Summarize one project phase by phase.",
+              "prompt": "Give me a phase-by-phase status of the Kettle & Crag website redesign project.",
+              "tools_triggered": "list_portals, list_projects, get_project",
+              "expected_behavior": "Website Redesign: Shopify 2.0, launch Tue, Nov 10, fixed fee $18,000 with half paid. Design: Sign off on homepage design v2 (client, due Oct 9), Upload the product photography (client, due Oct 7), Product page design v2 (In Progress, due Oct 16). Build, QA and launch: Content migration of 412 products and 38 collections (Ready for Work, due Oct 30), Set up redirects for 147 old URLs (Pending, due Nov 3). Linked resources: Meeting notes page, the Klaviyo or Shopify Email conversation, the WCAG 2.2 AA link and the Shopify staff login."
+            },
+            {
+              "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Read a client's invoices and explain the unpaid one.",
+              "prompt": "What does Kettle & Crag still owe us, and what's on that invoice?",
+              "tools_triggered": "list_portals, list_invoices, get_invoice",
+              "expected_behavior": "Invoice 00002 for $2,250.00 USD is due (invoice date Oct 1, due Oct 15, 2026): one line, Growth retainer: October (SEO, paid social and email, 30 hours) at $2,500.00 less a $250.00 launch-month discount. Invoice 00001 for $9,000.00 is paid. Nothing is changed."
+            },
+            {
+              "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Log a call in a work journal and create internal follow-up tasks.",
+              "prompt": "Log today's call with Kettle & Crag in their work journal: we agreed to start launch prep next week. Then add two internal tasks for my team: \"Prep the launch checklist\" due next Friday, and \"Book the launch shoot\".",
+              "tools_triggered": "list_portals, list_journals, add_journal_log, create_task",
+              "expected_behavior": "Adds one entry to the \"Website redesign - work log\" journal, authored by the signed-in user, and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" with next Friday's date and \"Book the launch shoot\" with no due date. Replies with what was logged and the two task names."
+            },
+            {
+              "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Draft an invoice from the user's numbers and show it before creating it, because creating an invoice emails the client.",
+              "prompt": "Draft an invoice for Saguaro Coffee Roasters: one line \"Cafe menu boards\", quantity 1 at $600, dated today and due in 14 days. Show it to me before creating it.",
+              "tools_triggered": "list_portals, list_invoices",
+              "expected_behavior": "Finds Saguaro Coffee Roasters and checks its invoices (00001 for $1,800.00, due Oct 29, 2026, not yet paid). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, with today's date and a due date 14 days later, says that creating it emails the client, and asks for approval. It does not call create_invoice until the user says yes."
+            }
+          ],
+          "negative": [
+            {
+              "description": "General business advice about client onboarding should not touch the user's Ahsuite data. Answers with general advice and does not call any Ahsuite tool, because the user did not ask about their portals or data.",
+              "prompt": "What's a good onboarding process for new clients at a small design agency?"
+            },
+            {
+              "description": "Writing a reminder email is a drafting request, not a request to message a client through Ahsuite. Writes the email text in the chat and does not post, comment or send anything through Ahsuite.",
+              "prompt": "Write a friendly email I can send a client to remind them to approve their homepage design."
+            },
+            {
+              "description": "Comparing email marketing tools is general research, even though a portal discusses the same choice. Gives a general comparison from its own knowledge and does not read or change any Ahsuite portal.",
+              "prompt": "Compare Klaviyo and Shopify Email for a small outdoor gear store."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "First release of Ahsuite for ChatGPT."
+      }
+    }
+  }
+}

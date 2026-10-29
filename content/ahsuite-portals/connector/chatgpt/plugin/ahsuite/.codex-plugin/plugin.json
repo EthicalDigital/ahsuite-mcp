@@ -1,6 +1,6 @@
 {
   "name": "ahsuite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run your agency's client portals from ChatGPT: see what's waiting on clients, build portals and pages, manage tasks, files, projects, journals and invoices.",
   "author": {
     "name": "Ethical Digital LLC",
@@ -10,7 +10,13 @@
   "homepage": "https://ahsuite.com/ai",
   "repository": "https://github.com/EthicalDigital/ahsuite-mcp",
   "license": "MIT",
-  "keywords": ["client portal", "agency", "tasks", "invoices", "client approvals"],
+  "keywords": [
+    "client portal",
+    "agency",
+    "tasks",
+    "invoices",
+    "client approvals"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -19,11 +25,14 @@
     "longDescription": "Ahsuite is client portal software for agencies, freelancers and service businesses. Connect your Ahsuite account to ask what's open, due or waiting on a client across your portals, and to read tasks, pages, files, conversations, projects, invoices and work journals. When you ask, it can also create portals and pages, create and assign tasks, add file requests, set up projects, write journal entries, reply to client conversations and create invoices. Tools that email your clients, such as assigning a task to the client or creating an invoice, say so. No tool takes or returns a password.",
     "developerName": "Ethical Digital LLC",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://ahsuite.com/ai",
     "privacyPolicyURL": "https://ahsuite.com/privacy",
     "termsOfServiceURL": "https://ahsuite.com/terms",
-    "supportURL": "https://docs.ahsuite.com/en/",
+    "supportURL": "https://ahsuite.com/contact-us",
     "defaultPrompt": [
       "What's waiting on my clients this week?",
       "Set up a portal for a new client",

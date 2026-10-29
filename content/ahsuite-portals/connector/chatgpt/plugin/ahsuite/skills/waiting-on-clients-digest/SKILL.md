@@ -54,3 +54,12 @@ Show statuses in plain words ("Ready for Work", "In Progress",
 Offer, don't do: chase the overdue tasks (the chase-overdue-client-tasks
 skill), or open any one item with `get_task`, `get_file` or `get_invoice`.
 Don't mark notifications read or change any task.
+
+## Complete collection
+
+For every list call used by this workflow, follow all pages using the tool's
+`page` and `limit` parameters and returned pagination information. If no
+pagination information is returned, continue until a page is shorter than
+the requested limit. Traverse nested file folders recursively. If an error
+or access limit prevents complete collection, identify the missing scope
+and label the result partial; never report an incomplete scan as complete.

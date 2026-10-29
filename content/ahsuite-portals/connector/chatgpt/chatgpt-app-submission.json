@@ -895,11 +895,11 @@
       "expected_output_url": null
     },
     {
-      "description": "Create a new clean client portal with a welcome page, a sign-off task and a file request.",
-      "user_prompt": "Create a clean client portal for Juniper Lane Bakery (contact: Sam Rivera, sam@juniperlane.example.com) with a welcome page, an internal task to get the homepage design signed off by Friday, and a request for their logo files.",
+      "description": "Draft an invoice from the user's numbers and show it before creating it, because creating an invoice emails the client.",
+      "user_prompt": "Draft an invoice for Saguaro Coffee Roasters: one line \"Cafe menu boards\", quantity 1 at $600, dated today and due in 14 days. Show it to me before creating it.",
       "file_attachment_urls": null,
-      "tools_triggered": "create_portal, create_page, create_task, create_file",
-      "expected_output": "Creates one portal named Juniper Lane Bakery without the default template, with Sam Rivera as primary contact; a Welcome page with a short text block; an internal task due this Friday; and a file request for the logo files. Replies with what was created. Each create call runs once.",
+      "tools_triggered": "list_portals, list_invoices",
+      "expected_output": "Finds Saguaro Coffee Roasters and checks its invoices (00001 for $1,800.00, due Oct 29, 2026, not yet paid). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, with today's date and a due date 14 days later, says that creating it emails the client, and asks for approval. It does not call create_invoice until the user says yes.",
       "expected_output_url": null
     }
   ],
