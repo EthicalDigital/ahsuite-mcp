@@ -887,19 +887,19 @@
       "expected_output_url": null
     },
     {
-      "description": "Log a call in a work journal and create internal follow-up tasks.",
-      "user_prompt": "Log today's call with Kettle & Crag in their work journal: we agreed to start launch prep next week. Then add two internal tasks for my team: \"Prep the launch checklist\" due next Friday, and \"Book the launch shoot\".",
+      "description": "Log a call in a work journal and create internal follow-up tasks. The assistant first shows the plan; when it asks for confirmation, reply \"Yes, go ahead.\" Each run adds one journal entry and two internal tasks; this does not change the client-task counts used in case 1.",
+      "user_prompt": "Log today's call with Kettle & Crag in their work journal: we agreed to start launch prep next week. Then add two internal tasks for my team: \"Prep the launch checklist\" due November 13, 2026, and \"Book the launch shoot\".",
       "file_attachment_urls": null,
       "tools_triggered": "list_portals, list_journals, add_journal_log, create_task",
-      "expected_output": "Adds one entry to the \"Website redesign - work log\" journal, authored by the signed-in user, and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" with next Friday's date and \"Book the launch shoot\" with no due date. Replies with what was logged and the two task names.",
+      "expected_output": "Shows the planned journal entry and the two internal tasks and asks for confirmation. After \"Yes, go ahead.\", adds one entry to the \"Website redesign - work log\" journal and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" due 2026-11-13 and \"Book the launch shoot\" with no due date. Replies with what was logged and the two task names.",
       "expected_output_url": null
     },
     {
       "description": "Draft an invoice from the user's numbers and show it before creating it, because creating an invoice emails the client.",
-      "user_prompt": "Draft an invoice for Saguaro Coffee Roasters: one line \"Cafe menu boards\", quantity 1 at $600, dated today and due in 14 days. Show it to me before creating it.",
+      "user_prompt": "Draft an invoice for Saguaro Coffee Roasters: one line \"Cafe menu boards\", quantity 1 at $600, invoice date November 2, 2026, due November 16, 2026. Show it to me before creating it.",
       "file_attachment_urls": null,
       "tools_triggered": "list_portals, list_invoices",
-      "expected_output": "Finds Saguaro Coffee Roasters and checks its invoices (00001 for $1,800.00, due Oct 29, 2026, not yet paid). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, with today's date and a due date 14 days later, says that creating it emails the client, and asks for approval. It does not call create_invoice until the user says yes.",
+      "expected_output": "Finds Saguaro Coffee Roasters and checks its invoices (00001 for $1,800.00, due Oct 29, 2026, not paid). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, invoice date 2026-11-02 and due date 2026-11-16, says that creating it emails the client, and asks for approval. It does not call create_invoice unless the user says yes.",
       "expected_output_url": null
     }
   ],
@@ -925,7 +925,7 @@
       "user_prompt": "Compare Klaviyo and Shopify Email for a small outdoor gear store.",
       "file_attachment_urls": null,
       "tools_triggered": null,
-      "expected_output": "Gives a general comparison from its own knowledge and does not read or change any Ahsuite portal.",
+      "expected_output": "Gives a general comparison (it may research current pricing) and does not call any Ahsuite tool or read any portal.",
       "expected_output_url": null
     }
   ]
