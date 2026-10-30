@@ -887,11 +887,11 @@
       "expected_output_url": null
     },
     {
-      "description": "Log a call in a work journal and create internal follow-up tasks. The assistant first shows the plan; when it asks for confirmation, reply \"Yes, go ahead.\" Each run adds one journal entry and two internal tasks; this does not change the client-task counts used in case 1.",
+      "description": "Log a call in a work journal and create internal follow-up tasks. If the assistant shows a plan and asks for confirmation first, reply \"Yes, go ahead.\" Each run adds one journal entry and two internal tasks; this does not change the client-task counts used in case 1.",
       "user_prompt": "Log today's call with Kettle & Crag in their work journal: we agreed to start launch prep next week. Then add two internal tasks for my team: \"Prep the launch checklist\" due November 13, 2026, and \"Book the launch shoot\".",
       "file_attachment_urls": null,
       "tools_triggered": "list_portals, list_journals, add_journal_log, create_task",
-      "expected_output": "Shows the planned journal entry and the two internal tasks and asks for confirmation. After \"Yes, go ahead.\", adds one entry to the \"Website redesign - work log\" journal and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" due 2026-11-13 and \"Book the launch shoot\" with no due date. Replies with what was logged and the two task names.",
+      "expected_output": "Adds one entry to the \"Website redesign - work log\" journal and creates two internal team tasks (not assigned to the client, so no client email): \"Prep the launch checklist\" due 2026-11-13 and \"Book the launch shoot\" with no due date. It may show the plan and ask for confirmation first. Replies with what was logged and the two task names.",
       "expected_output_url": null
     },
     {
