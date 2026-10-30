@@ -97,7 +97,9 @@
               "prompt": "Compare Klaviyo and Shopify Email for a small outdoor gear store."
             }
           ]
-        }
+        },
+        "commerce": false,
+        "commerce_description": "Nothing is sold or paid for inside ChatGPT. The plugin can create invoices in Ahsuite, which emails the client a link; the client pays inside Ahsuite, outside ChatGPT. ChatGPT never handles payment."
       },
       "publication": {
         "release_notes": "First release of Ahsuite for ChatGPT."
