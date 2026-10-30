@@ -80,7 +80,7 @@
               "description": "Setup: sign in with the reviewer test account. It holds three made-up client portals (Kettle & Crag Outfitters, Saguaro Coffee Roasters, Northwind Yoga Studio); client emails use example.com addresses. Draft an invoice from the user's numbers and show it before creating it, because creating an invoice emails the client.",
               "prompt": "Check Saguaro Coffee Roasters' existing invoices in Ahsuite, then draft a new one: one line \"Cafe menu boards\", quantity 1 at $600, invoice date November 2, 2026, due November 16, 2026. Show me the draft before creating it, and tell me what happens when it's created.",
               "tools_triggered": "list_portals, list_invoices",
-              "expected_behavior": "Looks up Saguaro Coffee Roasters and its invoices, and mentions invoice 00001 for $1,800.00 (due Oct 29, 2026, not paid). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, invoice date 2026-11-02 and due date 2026-11-16, explains that creating it emails the client, and asks for approval. It does not call create_invoice unless the user says yes."
+              "expected_behavior": "Looks up Saguaro Coffee Roasters and its existing invoices (it may mention invoice 00001 for $1,800.00). Shows a draft with one line, Cafe menu boards, 1 x $600.00, total $600.00 USD, invoice date 2026-11-02 and due date 2026-11-16, explains that creating it emails the client an \"action required\" notice, and asks for approval. It does not call create_invoice unless the user says yes."
             }
           ],
           "negative": [
