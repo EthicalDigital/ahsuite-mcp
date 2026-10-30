@@ -99,7 +99,8 @@
           ]
         },
         "commerce": false,
-        "commerce_description": "Nothing is sold or paid for inside ChatGPT. The plugin can create invoices in Ahsuite, which emails the client a link; the client pays inside Ahsuite, outside ChatGPT. ChatGPT never handles payment."
+        "commerce_description": "Nothing is sold or paid for inside ChatGPT. The plugin can create invoices in Ahsuite, which emails the client a link; the client pays inside Ahsuite, outside ChatGPT. ChatGPT never handles payment.",
+        "demo_recording_url": "https://www.loom.com/share/842c85e34db04faa92f9b10d4566cd92"
       },
       "publication": {
         "release_notes": "First release of Ahsuite for ChatGPT."
