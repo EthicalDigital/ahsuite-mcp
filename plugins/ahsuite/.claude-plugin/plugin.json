@@ -9,6 +9,9 @@
   },
   "homepage": "https://ahsuite.com/ai",
   "privacyPolicyUrl": "https://ahsuite.com/privacy",
+  "termsOfServiceUrl": "https://ahsuite.com/terms",
+  "supportUrl": "https://ahsuite.com/contact-us",
+  "documentationUrl": "https://ahsuite.com/api-docs",
   "repository": "https://github.com/EthicalDigital/ahsuite-mcp",
   "license": "MIT",
   "keywords": [
