@@ -21,15 +21,14 @@ read Oct 27, 2026.
 - `README.md` (the directory shows it as the listing description) and
   `LICENSE` (MIT).
 
-`claude plugin validate ./ahsuite` passes (Claude Code 2.1.311). One warning
-is left: **no icon** (see step 1).
+`claude plugin validate ./ahsuite` passes with no warnings. The icon is
+`.claude-plugin/icon.png` (512 x 512, from the red "ah" logo).
 
 ## Steps
 
-1. **Add an icon.** A square PNG, 512 to 2048 px, under 2 MB, at
-   `ahsuite/.claude-plugin/icon.png`. `logo-400.png` is too small (400 px).
-   The icon is taken **only once**, the first time the plugin is saved or
-   submitted in the portal, so add it before step 5.
+1. ~~Add an icon.~~ Done: `ahsuite/.claude-plugin/icon.png`, 512 x 512. The
+   icon is taken **only once**, the first time the plugin is saved or
+   submitted in the portal, so don't swap it after that.
 2. **Move the folder into the public repo**
    [github.com/EthicalDigital/ahsuite-mcp](https://github.com/EthicalDigital/ahsuite-mcp)
    as `plugins/ahsuite/`. Don't put it at the repo root: the root `README.md`
