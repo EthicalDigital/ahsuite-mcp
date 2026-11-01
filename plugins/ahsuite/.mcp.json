@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ahsuite": {
+      "type": "http",
+      "url": "https://ahsuite.com/api/mcp"
+    }
+  }
+}
