@@ -1,0 +1,8 @@
+{
+  "skills": "plugins/ahsuite/skills",
+  "skillAddendum": "skill-addendum.md",
+  "files": {
+    "assets/logo.png": "logo-400.png",
+    "assets/composer-icon.png": "mcp/chatgpt/ahsuite/composer-icon.png"
+  }
+}
