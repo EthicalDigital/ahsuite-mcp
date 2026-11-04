@@ -27,7 +27,8 @@
 // - Square PNG icons that are actually in the ZIP.
 // - Exactly 5 positive and 3 negative review cases. Expected answers use no run-date-relative words:
 //   reviewers run them days later.
-// - Every SKILL.md names its own folder, and no "Claude" survives the rewording.
+// - Every SKILL.md names its own folder. No skill relies on Claude Code (its name or a slash
+//   command such as /mcp), and no "Claude" survives the rewording.
 // The demo video URL is reported as owed; --strict makes a missing one fail.
 //
 //   node scripts/plugins/chatgpt-zip.mjs                 build every plugin into dist/chatgpt/
@@ -53,6 +54,9 @@ const NAME_RE = /^(?!.*(?:--|\.\.))[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$/;
 const SEMVER_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
 const RELATIVE_DATE_RE =
   /\b(today|tonight|tomorrow|yesterday|this (?:week|month)|next (?:week|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|last (?:week|month))\b/i;
+
+// Claude Code mechanics a skill can't rely on in ChatGPT: the product name, its slash commands.
+const CLAUDE_CODE_RE = /Claude Code|(?<![\w/])\/(?:mcp|plugin|skills?)\b/;
 
 const readJson = (p) => JSON.parse(readFileSync(p, "utf8"));
 const https = (u) => typeof u === "string" && /^https:\/\/[^\s]+$/.test(u);
@@ -143,12 +147,12 @@ export function buildPlugin(slug, repo = REPO) {
   const pos = review.test_cases?.positive;
   const neg = review.test_cases?.negative;
   if (!Array.isArray(pos) || pos.length !== 5) err(`review.test_cases.positive must hold exactly 5 cases (has ${pos?.length ?? 0})`);
-  else pos.forEach((c, i) => {
+  if (Array.isArray(pos)) pos.forEach((c, i) => {
     for (const k of ["description", "prompt", "tools_triggered", "expected_behavior"]) if (!c?.[k]?.trim?.()) err(`positive[${i}].${k} is empty`);
     if (RELATIVE_DATE_RE.test(c?.expected_behavior ?? "")) err(`positive[${i}].expected_behavior says "${c.expected_behavior.match(RELATIVE_DATE_RE)[0]}": reviewers run it on a later day, use an absolute date`);
   });
   if (!Array.isArray(neg) || neg.length !== 3) err(`review.test_cases.negative must hold exactly 3 cases (has ${neg?.length ?? 0})`);
-  else neg.forEach((c, i) => { for (const k of ["description", "prompt"]) if (!c?.[k]?.trim?.()) err(`negative[${i}].${k} is empty`); });
+  if (Array.isArray(neg)) neg.forEach((c, i) => { for (const k of ["description", "prompt"]) if (!c?.[k]?.trim?.()) err(`negative[${i}].${k} is empty`); });
   if (JSON.stringify(review.prompts) !== JSON.stringify(prompts)) err("review.prompts must equal interface.defaultPrompt");
   if (typeof review.commerce !== "boolean") err("review.commerce must be true or false");
   if (!review.commerce_description?.trim()) err("review.commerce_description is empty");
@@ -173,6 +177,8 @@ export function buildPlugin(slug, repo = REPO) {
     for (const file of walk(skillsDir)) {
       const rel = relative(skillsDir, file).split(sep).join(posix.sep);
       let text = readFileSync(file, "utf8");
+      const cc = text.match(CLAUDE_CODE_RE);
+      if (cc) err(`skills/${rel} relies on Claude Code ("${cc[0]}"), which ChatGPT doesn't have`);
       for (const [from, to] of build.replace ?? []) text = text.split(from).join(to);
       if (rel.endsWith("/SKILL.md")) {
         hasSkills = true;
@@ -183,7 +189,7 @@ export function buildPlugin(slug, repo = REPO) {
         if (name !== folder) err(`skills/${rel}: frontmatter name "${name}" must equal its folder "${folder}"`);
         if (!fm?.[1].match(/^description:\s*\S/m)) err(`skills/${rel}: frontmatter description is empty`);
       }
-      for (const [from] of build.replace ?? []) if (text.includes(from)) err(`skills/${rel} still says "${from}"`);
+      if (text.includes("Claude")) err(`skills/${rel} still says "Claude" (add ["Claude", "ChatGPT"] to build.json replace)`);
       files.set(`skills/${rel}`, Buffer.from(text));
     }
     if (!hasSkills) err(`build.json skills "${build.skills}" holds no SKILL.md`);
