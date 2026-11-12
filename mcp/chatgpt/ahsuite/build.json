@@ -19,7 +19,12 @@
       "- Never ask the user or the client for login credentials, payment card\n  numbers, government ID numbers or health information, and never accept them."
     ]
   ],
-  "forbid": ["create_password", "list_passwords", "password"],
+  "forbid": [
+    "create_password",
+    "list_passwords",
+    "password",
+    "staff login"
+  ],
   "files": {
     "assets/logo.png": "logo-400.png",
     "assets/composer-icon.png": "mcp/chatgpt/ahsuite/composer-icon.png"
