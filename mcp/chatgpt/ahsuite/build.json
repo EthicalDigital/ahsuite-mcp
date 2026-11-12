@@ -1,6 +1,25 @@
 {
   "skills": "plugins/ahsuite/skills",
   "skillAddendum": "skill-addendum.md",
+  "replace": [
+    [
+      "9. `list_passwords`: saved logins whose password is still `needed` or\n   `requested`. Never ask for or show a password.\n10. `list_projects` and `get_project`",
+      "9. `list_projects` and `get_project`"
+    ],
+    [
+      "invited contacts who never joined, logins with no password, project tasks\n  outside any phase.",
+      "invited contacts who never joined, project tasks outside any phase."
+    ],
+    [
+      "- `create_password` with `request` (asks the client to add a login's password)\n",
+      ""
+    ],
+    [
+      "- Never ask for, accept or store a password. To save a login, use\n  `create_password` with name, address and username only.",
+      "- Never ask the user or the client for login credentials, payment card\n  numbers, government ID numbers or health information, and never accept them."
+    ]
+  ],
+  "forbid": ["create_password", "list_passwords", "password"],
   "files": {
     "assets/logo.png": "logo-400.png",
     "assets/composer-icon.png": "mcp/chatgpt/ahsuite/composer-icon.png"
