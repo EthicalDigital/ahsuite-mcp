@@ -29,6 +29,7 @@
 // - At most three default prompts, each 128 characters or fewer, and a category from OpenAI's list.
 // - https policy URLs, and a brand color with 2:1 contrast against white.
 // - Square PNG icons that are actually in the ZIP.
+// - No interface.screenshots: OpenAI's uploader rejects a manifest that has it, even empty.
 // - Exactly 5 positive and 3 negative review cases. Expected answers use no run-date-relative words:
 //   reviewers run them days later.
 // - Every SKILL.md names its own folder. No skill relies on Claude Code (its name or a slash
@@ -134,6 +135,9 @@ export function buildPlugin(slug, repo = REPO) {
     if (typeof ui[k] !== "string" || !ui[k].trim()) err(`interface.${k} is empty`);
     else if (ui[k].length > max) err(`interface.${k} is ${ui[k].length} characters (max ${max})`);
   }
+  // OpenAI's uploader rejects the package when the manifest carries interface.screenshots, even empty
+  // (first seen 2026-11-16). Screenshots go in through the dashboard instead.
+  if ("screenshots" in ui) err("interface.screenshots must not be in plugin.json (OpenAI rejects the package); add screenshots in the dashboard");
   if (!CATEGORIES.includes(ui.category)) err(`interface.category "${ui.category}" is not one of: ${CATEGORIES.join(", ")}`);
   if (!Array.isArray(ui.capabilities) || ui.capabilities.length === 0) err("interface.capabilities is empty");
   for (const k of ["websiteURL", "privacyPolicyURL", "termsOfServiceURL", "supportURL"]) {
