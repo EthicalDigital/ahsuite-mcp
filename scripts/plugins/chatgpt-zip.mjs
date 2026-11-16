@@ -13,7 +13,11 @@
 //   mcp.json          the Agent Plugins MCP config, shipped as written.
 //   build.json        build inputs. All paths are relative to the repo root:
 //                       skills:        the Claude plugin's skills folder, copied in (optional)
-//                       replace:       [[from, to], …] applied to every skill file, e.g. Claude→ChatGPT
+//                       replace:       [[from, to], …] applied to every skill file, e.g. Claude→ChatGPT.
+//                                      Every pair must match at least once, so a reworded skill fails
+//                                      the build instead of silently shipping the old text.
+//                       forbid:        words (case-insensitive) that must not appear in plugin.json or
+//                                      any built skill, e.g. tools the ChatGPT server doesn't offer
 //                       skillAddendum: a file in this folder appended to every SKILL.md (optional)
 //                       files:         { "<path in the ZIP>": "<source path>" } for assets and LICENSE
 //   anything else build.json names, such as composer-icon.png
@@ -25,6 +29,7 @@
 // - At most three default prompts, each 128 characters or fewer, and a category from OpenAI's list.
 // - https policy URLs, and a brand color with 2:1 contrast against white.
 // - Square PNG icons that are actually in the ZIP.
+// - No interface.screenshots: OpenAI's uploader rejects a manifest that has it, even empty.
 // - Exactly 5 positive and 3 negative review cases. Expected answers use no run-date-relative words:
 //   reviewers run them days later.
 // - Every SKILL.md names its own folder. No skill relies on Claude Code (its name or a slash
@@ -130,6 +135,9 @@ export function buildPlugin(slug, repo = REPO) {
     if (typeof ui[k] !== "string" || !ui[k].trim()) err(`interface.${k} is empty`);
     else if (ui[k].length > max) err(`interface.${k} is ${ui[k].length} characters (max ${max})`);
   }
+  // OpenAI's uploader rejects the package when the manifest carries interface.screenshots, even empty
+  // (first seen 2026-11-16). Screenshots go in through the dashboard instead.
+  if ("screenshots" in ui) err("interface.screenshots must not be in plugin.json (OpenAI rejects the package); add screenshots in the dashboard");
   if (!CATEGORIES.includes(ui.category)) err(`interface.category "${ui.category}" is not one of: ${CATEGORIES.join(", ")}`);
   if (!Array.isArray(ui.capabilities) || ui.capabilities.length === 0) err("interface.capabilities is empty");
   for (const k of ["websiteURL", "privacyPolicyURL", "termsOfServiceURL", "supportURL"]) {
@@ -170,6 +178,12 @@ export function buildPlugin(slug, repo = REPO) {
   }
 
   // Skills.
+  const forbid = (build.forbid ?? []).map((w) => [w, new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")]);
+  const checkForbidden = (where, text) => {
+    for (const [w, re] of forbid) if (re.test(text)) err(`${where} mentions "${w}", which build.json forbids`);
+  };
+  checkForbidden("plugin.json", manifestText.toString("utf8"));
+  const replaceHits = (build.replace ?? []).map(() => 0);
   let hasSkills = false;
   if (build.skills) {
     const skillsDir = join(repo, build.skills);
@@ -179,7 +193,12 @@ export function buildPlugin(slug, repo = REPO) {
       let text = readFileSync(file, "utf8");
       const cc = text.match(CLAUDE_CODE_RE);
       if (cc) err(`skills/${rel} relies on Claude Code ("${cc[0]}"), which ChatGPT doesn't have`);
-      for (const [from, to] of build.replace ?? []) text = text.split(from).join(to);
+      (build.replace ?? []).forEach(([from, to], i) => {
+        const parts = text.split(from);
+        replaceHits[i] += parts.length - 1;
+        text = parts.join(to);
+      });
+      checkForbidden(`skills/${rel}`, text);
       if (rel.endsWith("/SKILL.md")) {
         hasSkills = true;
         if (addendum) text = `${text}\n${addendum}`;
@@ -194,6 +213,9 @@ export function buildPlugin(slug, repo = REPO) {
     }
     if (!hasSkills) err(`build.json skills "${build.skills}" holds no SKILL.md`);
   }
+  replaceHits.forEach((n, i) => {
+    if (n === 0) err(`build.json replace[${i}] matched nothing (was the skill reworded?): ${JSON.stringify(build.replace[i][0].slice(0, 60))}…`);
+  });
 
   // Assets, LICENSE and anything else named in build.json.
   for (const [to, from] of Object.entries(build.files ?? {})) {
