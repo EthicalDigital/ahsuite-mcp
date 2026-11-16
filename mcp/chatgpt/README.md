@@ -25,7 +25,8 @@ node scripts/plugins/chatgpt-zip.mjs --strict   # also fail if the demo video UR
 
 The build generates `.mcp.json` and `.codex-plugin/plugin.json` for older clients.
 
-Version 1.0.1 (submitted 2026-10-30) came back "Changes required". Version 1.0.2 is the fix: the ChatGPT
+Version 1.0.1 (submitted 2026-10-30) came back "Changes required". Version 1.0.2 (submitted 2026-11-16,
+in review) is the fix: the ChatGPT
 copy of the skills and the listing no longer mention the password vault, because the server leaves
 `create_password` and `list_passwords` out of the tools it offers ChatGPT. `build.json` `replace` makes
 that edit (the Claude plugin keeps its wording) and `forbid` fails the build if a mention comes back.
@@ -47,6 +48,10 @@ that edit (the Claude plugin keeps its wording) and `forbid` fails the build if 
 - `openWorldHint` is `true` for any tool that can expose data outside the account, not only tools that
   email someone: `update_portal_preferences` (file access without login) was flagged for `false`.
 - OpenAI wants a one-line justification for every hint. Have them ready when you resubmit.
+- The submit form has no reviewer-login field. Put the reviewer account in *Additional Submission
+  Context* (private to the review), with a note on what changed since the last version.
+- OpenAI's uploader rejects `interface.screenshots` in the manifest, even an empty list. The build now
+  fails on it.
 - Rejection details arrive by email to the org owner; the dashboard only says "Changes required". To see
   the automated findings, *Revise submission* to make a draft, then *Reconnect* and *Rescan* on the MCPs
   tab.
